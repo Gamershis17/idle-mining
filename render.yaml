@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: idle-mining
+    runtime: node
+    repo: https://github.com/Gamershis17/idle-mining
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        sync: false

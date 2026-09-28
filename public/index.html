@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>⛏️ Idle Mining</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="brand"><span class="pick">⛏️</span>Idle Mining</div>
+    <div class="top-right">
+      <span id="save-ind">…</span>
+      <button class="icon-btn" id="mute-btn" title="Sound on/off">🔊</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Ore Banked</div><div class="v" id="st-ore">0</div></div>
+    <div class="stat"><div class="k">Per Second</div><div class="v" id="st-ps">0</div></div>
+    <div class="stat"><div class="k">Per Strike</div><div class="v" id="st-pstr">1</div></div>
+  </div>
+
+  <!-- MINE -->
+  <section class="tab active" id="tab-mine">
+    <div class="pc-grid">
+      <div>
+        <div id="mine-scene">
+          <div class="hint">Tap or hold the rock to mine</div>
+          <div id="rock-wrap">
+            <div id="rock">
+              <svg class="crack s1" viewBox="0 0 100 100"><polyline points="50,8 44,30 52,48 46,70" stroke="#0a0a0a" stroke-width="3" fill="none"/></svg>
+              <svg class="crack s2" viewBox="0 0 100 100"><polyline points="20,40 38,44 44,30" stroke="#0a0a0a" stroke-width="3" fill="none"/><polyline points="80,55 62,60 58,78" stroke="#0a0a0a" stroke-width="3" fill="none"/></svg>
+              <svg class="crack s3" viewBox="0 0 100 100"><polyline points="50,8 44,30 52,48 46,70 55,90" stroke="#0a0a0a" stroke-width="4" fill="none"/><polyline points="30,20 44,30 38,44" stroke="#0a0a0a" stroke-width="3" fill="none"/></svg>
+            </div>
+          </div>
+          <img id="pickaxe" src="assets/pickaxe-ember.png" alt="pickaxe">
+        </div>
+        <div class="card" style="margin-top:10px">
+          <h3>⛏️ <span id="pick-name">Embersteel Pick</span></h3>
+          <div style="font-size:13px;color:var(--dim)" id="layer-name">Coal Hollow</div>
+        </div>
+      </div>
+      <div>
+        <div class="card"><h3>🛠️ Equipment</h3><div id="eq-list"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHAFT -->
+  <section class="tab" id="tab-shaft">
+    <div id="shaft-scene">
+      <img src="assets/mine-shaft.png" alt="mine shaft">
+      <div class="veil"></div>
+      <div class="depth-tag">
+        <div style="font-weight:800">🕳️ Depth: <span id="depth-m">0</span> m</div>
+        <div style="font-size:13px;color:var(--dim)">Next: <span id="next-layer">Iron Grotto</span></div>
+        <div class="pbar"><div id="layer-bar"></div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px"><h3>⛏️ Mine Layers</h3><div id="layer-list"></div></div>
+  </section>
+
+  <!-- GROVE -->
+  <section class="tab" id="tab-grove">
+    <div id="grove-scene">
+      <img class="bg" src="assets/sunset-grove.png" alt="sunset grove">
+      <canvas id="grove-canvas"></canvas>
+      <div class="water-shimmer"></div>
+      <div class="rest-tag">🍃 Resting… <b>+<span id="grove-earned">0</span> ore</b> earned while you relax</div>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <h3>🌅 Sunset Grove</h3>
+      <div style="font-size:14px;color:var(--dim)">Your crew keeps mining while you rest. Water &amp; wind ambience plays here — use the 🔊 button up top to mute.</div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="tab" id="tab-stats">
+    <div class="card"><h3>📜 Miner's Log</h3><div id="log-list"></div></div>
+    <div class="card"><h3>🏆 Leaderboard</h3><div id="lb-list"><div style="color:var(--dim);font-size:14px">Loading…</div></div></div>
+    <div class="card">
+      <h3>⚙️ Account</h3>
+      <div style="font-size:14px;margin-bottom:10px" id="acct-line">…</div>
+      <div class="row">
+        <button class="btn ghost" id="logout-btn">Log out</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabs">
+    <button data-tab="mine" class="on">⛏️ Mine</button>
+    <button data-tab="shaft">🕳️ Shaft</button>
+    <button data-tab="grove">🌅 Grove</button>
+    <button data-tab="stats">📜 Stats</button>
+  </nav>
+</div>
+
+<div id="auth-veil">
+  <div class="auth-box">
+    <h2>⛏️ Idle Mining</h2>
+    <p>Sign in to save your mine to the cloud, or play as a guest.</p>
+    <input id="auth-user" placeholder="Username" maxlength="16" autocomplete="username">
+    <input id="auth-pass" type="password" placeholder="Password" autocomplete="current-password">
+    <div id="auth-err"></div>
+    <button class="btn" id="login-btn">Log in</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost" id="register-btn">Create account</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost" id="guest-btn">Play as Guest</button>
+  </div>
+</div>
+
+<div id="wb-veil" class="hidden">
+  <div class="auth-box wb-box">
+    <h2>🌙 Welcome back, miner!</h2>
+    <p>While you were away:</p>
+    <div class="big">+<span id="wb-amount">0</span> ore</div>
+    <button class="btn" id="wb-ok">Collect</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
