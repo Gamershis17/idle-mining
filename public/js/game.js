@@ -97,6 +97,7 @@ function recalc() {
   if (pi !== S.pickaxeTier) {
     S.pickaxeTier = pi;
     $('pickaxe').src = PICKS[pi].img;
+    $('pickaxe').dataset.tier = pi;
     $('pick-name').textContent = PICKS[pi].name;
     toast('⛏️ New pickaxe: ' + PICKS[pi].name + '!');
     Audio8.coin();
@@ -430,6 +431,7 @@ async function loadGame() {
   $('mute-btn').textContent = S.muted ? '🔇' : '🔊';
   recalc();
   $('pickaxe').src = PICKS[S.pickaxeTier].img;
+  $('pickaxe').dataset.tier = S.pickaxeTier;
   $('pick-name').textContent = PICKS[S.pickaxeTier].name;
   renderEquip();
   renderLayers();
