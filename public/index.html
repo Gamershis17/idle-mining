@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>⛏️ Idle Mining</title>
 <link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#15171e">
+<link rel="apple-touch-icon" href="/assets/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <div id="app">
@@ -85,6 +90,7 @@
       <div style="font-size:14px;margin-bottom:10px" id="acct-line">…</div>
       <div class="row">
         <button class="btn ghost" id="logout-btn">Log out</button>
+        <button class="btn hidden" id="install-btn">📲 Install app</button>
       </div>
     </div>
   </section>
@@ -125,5 +131,46 @@
 
 <script src="js/audio.js"></script>
 <script src="js/game.js"></script>
+<script>
+(function () {
+  'use strict';
+  // Register the service worker. Any failure here must never break the game.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () { /* offline mode unavailable */ });
+    });
+  }
+  // "Install app" button: only shown when the browser offers an install prompt
+  // and the game isn't already running as an installed app.
+  var btn = document.getElementById('install-btn');
+  if (!btn) return;
+  var deferred = null;
+  function isStandalone() {
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+      window.navigator.standalone === true;
+  }
+  function updateBtn() {
+    btn.classList.toggle('hidden', isStandalone() || !deferred);
+  }
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    updateBtn();
+  });
+  window.addEventListener('appinstalled', function () {
+    deferred = null;
+    updateBtn();
+  });
+  btn.addEventListener('click', function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function () {
+      deferred = null;
+      updateBtn();
+    }).catch(function () { /* dismissed */ });
+  });
+  updateBtn();
+})();
+</script>
 </body>
 </html>

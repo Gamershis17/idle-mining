@@ -218,6 +218,7 @@ nav.tabs button.on { background: #2a1f10; color: var(--gold); }
 /* welcome-back popup */
 #wb-veil { position: fixed; inset: 0; background: rgba(5,6,9,.8); z-index: 90; display: flex; align-items: center; justify-content: center; padding: 20px; }
 #wb-veil.hidden { display: none; }
+#install-btn.hidden { display: none; }
 .wb-box { text-align: center; }
 .wb-box .big { font-size: 26px; font-weight: 800; color: var(--gold); margin: 8px 0; }
 
