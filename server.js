@@ -37,6 +37,7 @@ async function initDb() {
   }
   const { Pool } = require('pg');
   pgPool = new Pool({ connectionString: DATABASE_URL, ssl: { rejectUnauthorized: false } });
+  await pgPool.query(`CREATE EXTENSION IF NOT EXISTS citext;`);
   await pgPool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
