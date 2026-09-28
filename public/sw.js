@@ -1,6 +1,6 @@
 // Idle Mining service worker — offline-capable PWA shell.
 // Static assets: cache-first. API: network-first (never serve stale saves).
-const CACHE = 'idle-mining-v2';
+const CACHE = 'idle-mining-v3';
 
 const PRECACHE = [
   '/',
@@ -17,6 +17,8 @@ const PRECACHE = [
   '/assets/pickaxe-ember.png',
   '/assets/pickaxe-frost.png',
   '/assets/pickaxe-dragonfire.png',
+  '/assets/pickaxe-galaxy.png',
+  '/assets/pickaxe-blackhole.png',
   '/assets/mine-shaft.png',
   '/assets/sunset-grove.png',
 ];

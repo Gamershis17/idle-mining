@@ -4,17 +4,23 @@
 
 // ---------------- config ----------------
 const LAYERS = [
-  { name: 'Coal Hollow', at: 0 },
-  { name: 'Iron Grotto', at: 250 },
-  { name: 'Gold Deep', at: 2500 },
-  { name: 'Crystal Cavern', at: 25000 },
-  { name: 'Ember Core', at: 250000 },
-  { name: 'Void Seam', at: 2500000 },
+  { name: 'Coal Hollow', at: 0, ore: '\u26cf\ufe0f' },
+  { name: 'Iron Grotto', at: 250, ore: '\u2699\ufe0f' },
+  { name: 'Gold Deep', at: 2500, ore: '\ud83e\ude99' },
+  { name: 'Crystal Cavern', at: 25000, ore: '\ud83d\udc8e' },
+  { name: 'Ember Core', at: 250000, ore: '\ud83d\udd25' },
+  { name: 'Void Seam', at: 2500000, ore: '\ud83d\udd73\ufe0f' },
+  { name: 'Mithril Vein', at: 25000000, ore: '\u2728' },
+  { name: 'Solar Forge', at: 250000000, ore: '\u2600\ufe0f' },
+  { name: 'Nebula Deposit', at: 2500000000, ore: '\ud83c\udf0c' },
+  { name: 'Singularity Heart', at: 25000000000, ore: '\u26ab' },
 ];
 const PICKS = [
   { name: 'Embersteel Pick', img: 'assets/pickaxe-ember.png', at: 0 },
   { name: 'Frostbite Pick', img: 'assets/pickaxe-frost.png', at: 2000 },
   { name: 'Dragonfire Pick', img: 'assets/pickaxe-dragonfire.png', at: 50000 },
+  { name: 'Galaxy Pick', img: 'assets/pickaxe-galaxy.png', at: 1000000 },
+  { name: 'Blackhole Pick', img: 'assets/pickaxe-blackhole.png', at: 25000000 },
 ];
 const EQUIP = [
   { id: 'pick', ico: '⛏️', name: 'Steel Pick', desc: '+1 ore per strike', base: 15, growth: 1.7, ps: 1, psec: 0 },
@@ -90,6 +96,7 @@ function recalc() {
   const li = layerIndex(S.totalOre);
   const mult = 1 + li * 0.5;
   S.layer = li;
+  $('rock-wrap').dataset.layer = li;
   S.perStrike = (1 + (S.equipment.pick || 0) * 1) * mult;
   S.perSecond = ((S.equipment.cart || 0) * 2 + (S.equipment.drill || 0) * 12 + (S.equipment.shaft || 0) * 50) * mult;
   S.depth = Math.floor(S.totalOre / 5);
@@ -109,7 +116,7 @@ function renderStats() {
   $('st-ore').textContent = fmt(S.ore);
   $('st-ps').textContent = fmt(S.perSecond);
   $('st-pstr').textContent = fmt(S.perStrike);
-  $('layer-name').textContent = LAYERS[S.layer].name;
+  $('layer-name').textContent = (LAYERS[S.layer].ore || '') + ' ' + LAYERS[S.layer].name;
   $('depth-m').textContent = fmt(S.depth);
   const li = S.layer;
   const next = LAYERS[li + 1];
@@ -150,7 +157,7 @@ function renderLayers() {
   LAYERS.forEach((l, i) => {
     const d = document.createElement('div');
     d.className = 'lrow';
-    d.innerHTML = '<span class="rk">' + (i <= S.layer ? '✅' : '🔒') + ' ' + l.name + '</span><span>' + fmt(l.at) + '+ ore</span>';
+    d.innerHTML = '<span class="rk">' + (i <= S.layer ? '✅' : '🔒') + ' ' + (l.ore || '') + ' ' + l.name + '</span><span>' + fmt(l.at) + '+ ore</span>';
     el.appendChild(d);
   });
 }
